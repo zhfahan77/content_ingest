@@ -1,9 +1,9 @@
 from flask import request, jsonify
 from app import app
-from app.scapper.goose_scraper import scrape_url
+from app.scapper.page_scraper import scrape_url
 
-@app.route('/scrape', methods=['POST'])
-def scrape():
+@app.route('/scrape/page', methods=['POST'])
+def scrape_page():
     try:
         url = request.json.get('url')
 
