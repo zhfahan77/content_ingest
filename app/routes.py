@@ -21,7 +21,8 @@ def scrape_page():
                 return json.loads(cached_data)
 
         data = scrape_url(url)
-        redis_client.set(key, json.dumps(data), ex=3600)
+        # caching for a day
+        redis_client.set(key, json.dumps(data), ex=86400)
         return jsonify(data)
 
     except Exception as e:
@@ -43,7 +44,8 @@ def scrape_pdf_url():
                 return json.loads(cached_data)
 
         data = scrape_pdf(url)
-        redis_client.set(key, json.dumps(data), ex=3600)
+        # caching for a day
+        redis_client.set(key, json.dumps(data), ex=86400)
         return jsonify(data)
 
     except Exception as e:
