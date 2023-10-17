@@ -113,3 +113,6 @@ dmypy.json
 
 # pytest
 __snapshots__/
+
+# redis data
+redis-data
