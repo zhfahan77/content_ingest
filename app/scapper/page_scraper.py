@@ -1,6 +1,5 @@
 from goose3 import Goose
 from bs4 import BeautifulSoup
-import requests
 
 def get_images(images_tags):
     image_urls = []
