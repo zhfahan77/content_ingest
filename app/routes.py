@@ -1,6 +1,6 @@
 from flask import request, jsonify
 import json
-from app import app, redis_client
+from app.app import app, redis_client
 from app.lib.url_parser import remove_query_params_and_fragment
 from app.scapper.page_scraper import scrape_url
 from app.scapper.pdf_scraper import scrape_pdf
