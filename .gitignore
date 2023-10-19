@@ -112,5 +112,7 @@ dmypy.json
 # pytest
 __snapshots__/
 
-# redis data
+# data
 redis-data
+postgres-data
+*-data

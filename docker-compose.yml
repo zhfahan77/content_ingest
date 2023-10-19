@@ -7,6 +7,20 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - $PWD/redis-data/:/var/lib/redis
+      - redis-data:/var/lib/redis
     environment:
       - REDIS_REPLICATION_MODE=masters
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=scraper
+
+volumes:
+  db-data:
+  redis-data:
