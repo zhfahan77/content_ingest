@@ -11,29 +11,47 @@ def scrape_page():
     try:
         url = request.json.get('url')
         reCache = request.json.get('reCache')
+        reScrape = request.json.get('reScrape')
         key = remove_query_params_and_fragment(url)
 
         if not url:
-                return jsonify({'error': 'URL not provided'}), 400
+            return jsonify({'error': 'URL not provided'}), 400
 
         if not reCache:
             cached_data = redis_client.get(key)
             if cached_data:
                 return json.loads(cached_data)
 
+        existing_data = db.session.query(ScrapedData).filter(
+            ScrapedData.domain == get_url_domain(url),
+            ScrapedData.path == get_url_path(url)
+        ).one_or_none()
+
+        if existing_data and not reScrape:
+            existing_data_dict = {
+                'title': existing_data.title,
+                'body': existing_data.body,
+                'meta_description': existing_data.metadata_json['meta_description'],
+                'publish_date': str(existing_data.metadata_json['publish_date']),
+                'images': existing_data.metadata_json['images']
+            }
+            return jsonify(existing_data_dict)
+
         data = scrape_url(url)
+
         # caching for a day
         redis_client.set(key, json.dumps(data), ex=86400)
 
-        new_record = ScrapedData(
-            domain=get_url_domain(url),
-            path=get_url_path(url),
-            body=data['body'],
-            title=data['title'],
-            metadata_json=data
-        )
-        db.session.add(new_record)
-        db.session.commit()
+        if not reScrape:
+            new_record = ScrapedData(
+                domain=get_url_domain(url),
+                path=get_url_path(url),
+                body=data['body'],
+                title=data['title'],
+                metadata_json=data
+            )
+            db.session.add(new_record)
+            db.session.commit()
         return jsonify(data)
 
     except Exception as e:
