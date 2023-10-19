@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime, text
 from sqlalchemy.dialects.postgresql import JSON
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -14,6 +14,8 @@ class ScrapedData(Base):
     body = Column(String(), nullable=False)
     title = Column(String(512), nullable=False)
     metadata_json = Column(JSON)
+    created_at = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
 
     def __init__(self, domain, path, body, title, metadata_json):
         self.domain = domain
