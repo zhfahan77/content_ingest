@@ -1,9 +1,10 @@
 from flask import request, jsonify
 import json
-from app.app import app, redis_client
-from app.lib.url_parser import remove_query_params_and_fragment
+from app.app import app, redis_client, db
+from app.lib.url_parser import remove_query_params_and_fragment, get_url_domain, get_url_path
 from app.scapper.page_scraper import scrape_url
 from app.scapper.pdf_scraper import scrape_pdf
+from app.models.scraped_data import ScrapedData
 
 @app.route('/scrape/page', methods=['POST'])
 def scrape_page():
@@ -23,9 +24,20 @@ def scrape_page():
         data = scrape_url(url)
         # caching for a day
         redis_client.set(key, json.dumps(data), ex=86400)
+
+        new_record = ScrapedData(
+            domain=get_url_domain(url),
+            path=get_url_path(url),
+            body=data['body'],
+            title=data['title'],
+            metadata_json=data
+        )
+        db.session.add(new_record)
+        db.session.commit()
         return jsonify(data)
 
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
 
 @app.route('/scrape/pdf', methods=['POST'])
