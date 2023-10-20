@@ -1,6 +1,8 @@
 # Content Ingest
 
-This is a Python Flask-based application that uses Alembic for database migrations. It also connects to Redis and PostgreSQL databases. To make it easy to set up and run the application, there is a Docker Compose configuration for development.
+This is a Python Flask-based scraping application that uses Alembic for database migrations. It also connects to Redis and PostgreSQL databases.
+
+To make it easy to set up and run the application, there is a Docker Compose configuration for development.
 
 ## Prerequisites
 
@@ -27,7 +29,6 @@ cd content_ingest
 ```
 
 ### Create a virtual environment and activate it (optional but recommended):
-
 
 ```shell
 python -m venv venv
@@ -64,7 +65,46 @@ Run Alembic migrations to set up the database schema:
 alembic upgrade head
 ```
 
-### Features
+### Run Application (Dev)
+```shell
+python run.my
+```
+
+## OR use Makefile
+
+### **Clone this repository to your local machine:**
+
+```shell
+git clone git@github.com:zhfahan77/content_ingest.git
+```
+
+### Change to the project directory:
+
+```shell
+cd content_ingest
+```
+
+### Create a virtual environment and activate it (optional but recommended):
+
+```shell
+python -m venv venv
+source venv/bin/activate
+```
+
+### Bootsrap Application
+
+```shell
+make init
+```
+
+---
+
+### Help
+```shell
+make help
+```
+
+## Features
 
 - Extract the title and body of a resource
 - Extract images from a content item
