@@ -120,24 +120,30 @@ make help
 
 ## 📋 APIs
 
-### 🚀 Scrape a webpage by a given URL
+### 🚀 Scrape a webpage/pdf by a given URL
+
+API URL: `http://127.0.0.1:5000/scrape`  
+METHOD: `POST`  
+
+### Page
 ```shell
-curl --location 'http://127.0.0.1:5000/scrape/page' \
+curl --location 'http://127.0.0.1:5000/scrape' \
 --header 'Content-Type: application/json' \
 --data '{
     "url": "https://www.theguardian.com/politics/2018/aug/19/brexit-tory-mps-warn-of-entryism-threat-from-leave-eu-supporters",
 }'
 ```
 
-- optionally we can pass
-    - "reCache": true --> it would recache the content
-    - "reScrape": true --> it would rescrape the url
+### PDF
 
-### 🚀 Scrape a PDF by a given URL
 ```shell
-curl --location 'http://127.0.0.1:5000/scrape/pdf' \
+curl --location 'http://127.0.0.1:5000/scrape' \
 --header 'Content-Type: application/json' \
 --data '{
     "url": "https://www.lazardassetmanagement.com/docs/product/-sp10-/137/lazardonjapan_2023q3.pdf"
 }'
 ```
+
+optionally we can pass  
+- `"reCache": true` --> it would recache the content  
+- `"reScrape": true` --> it would rescrape the url

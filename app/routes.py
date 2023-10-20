@@ -2,11 +2,10 @@ from flask import request, jsonify
 import json
 from app.app import app, redis_client, db
 from app.lib.url_parser import remove_query_params_and_fragment, get_url_domain, get_url_path
-from app.scapper.page_scraper import scrape_url
-from app.scapper.pdf_scraper import scrape_pdf
+from app.scapper.scrape import scrape
 from app.models.scraped_data import ScrapedData
 
-@app.route('/scrape/page', methods=['POST'])
+@app.route('/scrape', methods=['POST'])
 def scrape_page():
     try:
         url = request.json.get('url')
@@ -37,7 +36,7 @@ def scrape_page():
             }
             return jsonify(existing_data_dict)
 
-        data = scrape_url(url)
+        data = scrape(url)
 
         # caching for a day
         redis_client.set(key, json.dumps(data), ex=86400)
@@ -58,25 +57,3 @@ def scrape_page():
         print(e)
         return jsonify({'error': str(e)}), 500
 
-@app.route('/scrape/pdf', methods=['POST'])
-def scrape_pdf_url():
-    try:
-        url = request.json.get('url')
-        reCache = request.json.get('reCache')
-        key = remove_query_params_and_fragment(url)
-
-        if not url:
-            return jsonify({'error': 'URL not provided'}), 400
-
-        if not reCache:
-            cached_data = redis_client.get(key)
-            if cached_data:
-                return json.loads(cached_data)
-
-        data = scrape_pdf(url)
-        # caching for a day
-        redis_client.set(key, json.dumps(data), ex=86400)
-        return jsonify(data)
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500

@@ -8,7 +8,7 @@ def get_images(images_tags):
             image_urls.append(image.get('src'))
     return image_urls
 
-def scrape_url(url):
+def scrape_page(url):
     g = Goose({ 'browser_user_agent': 'Mozilla', 'parser_class':'soup' })
     article = g.extract(url=url)
 
