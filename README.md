@@ -1,10 +1,10 @@
-# Content Ingest
+# 📋 Content Ingest
 
 This is a Python Flask-based scraping application that uses Alembic for database migrations. It also connects to Redis and PostgreSQL databases.
 
 To make it easy to set up and run the application, there is a Docker Compose configuration for development.
 
-## Prerequisites
+## 🛠️ Prerequisites
 
 Before you can run this application, ensure you have the following software installed on your system:
 
@@ -12,52 +12,52 @@ Before you can run this application, ensure you have the following software inst
 - Docker Compose
 - Python (3.6 or higher)
 
-## Getting Started
+## 🚀 Getting Started
 
 Follow these steps to set up and run the application:
 
-### **Clone this repository to your local machine:**
+### ➡️ **Clone this repository to your local machine:**
 
 ```shell
 git clone git@github.com:zhfahan77/content_ingest.git
 ```
 
-### Change to the project directory:
+### 📂 Change to the project directory:
 
 ```shell
 cd content_ingest
 ```
 
-### Create a virtual environment and activate it (optional but recommended):
+### 🐍 Create a virtual environment and activate it (optional but recommended):
 
 ```shell
 python -m venv venv
 source venv/bin/activate
 ```
 
-### Install Python dependencies:
+### 📦 Install Python dependencies:
 
 ```shell
 pip install -r requirements.txt
 ```
 
-### Copy .env.sample, create .env file
+### 📝 Copy .env.sample, create .env file
 
 ```shell
 cp .env.sample .env
 ```
 
-### Export Python Path
+### 🐍 Export Python Path
 ```shel
 export PYTHONPATH=$PYTHONPATH:$PWD
 ```
 
-### Run Redis and Database using Docker-Compose
+### 🐳 Run Redis and Database using Docker-Compose
 ```shell
 docker-compose up -d
 ```
 
-### Running Migrations
+### 📜 Running Migrations
 
 Run Alembic migrations to set up the database schema:
 
@@ -65,33 +65,33 @@ Run Alembic migrations to set up the database schema:
 alembic upgrade head
 ```
 
-### Run Application (Dev)
+### ▶️ Run Application (Dev)
 ```shell
 python run.my
 ```
 
-## OR use Makefile
+## 📌 OR use Makefile
 
-### **Clone this repository to your local machine:**
+### ➡️ **Clone this repository to your local machine:**
 
 ```shell
 git clone git@github.com:zhfahan77/content_ingest.git
 ```
 
-### Change to the project directory:
+### 📂 Change to the project directory:
 
 ```shell
 cd content_ingest
 ```
 
-### Create a virtual environment and activate it (optional but recommended):
+### 🐍 Create a virtual environment and activate it (optional but recommended):
 
 ```shell
 python -m venv venv
 source venv/bin/activate
 ```
 
-### Bootsrap Application
+### 🔄 Bootsrap Application
 
 ```shell
 make init
@@ -99,12 +99,12 @@ make init
 
 ---
 
-### Help
+### ⁉️ Help
 ```shell
 make help
 ```
 
-## Features
+## ✨ Features
 
 - Extract the title and body of a resource
 - Extract images from a content item
@@ -117,3 +117,27 @@ make help
     - Using redis to cache data on deman
 - Extract title and body from PDF
     - Basic scraping from PDF
+
+## 📋 APIs
+
+### 🚀 Scrape a webpage by a given URL
+```shell
+curl --location 'http://127.0.0.1:5000/scrape/page' \
+--header 'Content-Type: application/json' \
+--data '{
+    "url": "https://www.theguardian.com/politics/2018/aug/19/brexit-tory-mps-warn-of-entryism-threat-from-leave-eu-supporters",
+}'
+```
+
+- optionally we can pass
+    - "reCache": true --> it would recache the content
+    - "reScrape": true --> it would rescrape the url
+
+### 🚀 Scrape a PDF by a given URL
+```shell
+curl --location 'http://127.0.0.1:5000/scrape/pdf' \
+--header 'Content-Type: application/json' \
+--data '{
+    "url": "https://www.lazardassetmanagement.com/docs/product/-sp10-/137/lazardonjapan_2023q3.pdf"
+}'
+```
